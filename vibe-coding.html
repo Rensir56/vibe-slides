@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vibe Coding: AI 时代的编程方式</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" />
+
+  <style>
+    /* ===========================================
+       CSS CUSTOM PROPERTIES (THEME)
+       Split Pastel Style
+       =========================================== */
+    :root {
+      --bg-peach: #f5e6dc;
+      --bg-lavender: #e4dff0;
+      --text-dark: #1a1a1a;
+      --text-secondary: #555;
+      --badge-mint: #c8f0d8;
+      --badge-yellow: #f0f0c8;
+      --badge-pink: #f0d4e0;
+      --accent-peach: #e8c4a8;
+
+      --title-size: clamp(1.8rem, 5vw, 4rem);
+      --subtitle-size: clamp(0.8rem, 1.5vw, 1.1rem);
+      --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+      --slide-padding: clamp(1.5rem, 4vw, 4rem);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 视口基础样式 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--slide-padding);
+      max-height: 100%;
+      overflow: hidden;
+    }
+
+    /* 动画 */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+    }
+
+    .slide.visible .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal:nth-child(1) { transition-delay: 0.1s; }
+    .reveal:nth-child(2) { transition-delay: 0.2s; }
+    .reveal:nth-child(3) { transition-delay: 0.3s; }
+    .reveal:nth-child(4) { transition-delay: 0.4s; }
+    .reveal:nth-child(5) { transition-delay: 0.5s; }
+    .reveal:nth-child(6) { transition-delay: 0.6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { transition: opacity 0.3s; transform: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ===========================================
+       SLIDE 1: 标题页
+       =========================================== */
+    .slide-title {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100%;
+    }
+
+    .panel-peach {
+      background: var(--bg-peach);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--slide-padding);
+    }
+
+    .panel-lavender {
+      background: var(--bg-lavender);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: var(--slide-padding);
+      position: relative;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: clamp(0.3rem, 0.8vw, 0.6rem) clamp(0.6rem, 1.5vw, 1.2rem);
+      border-radius: 50px;
+      font-size: var(--body-size);
+      font-weight: 700;
+      width: fit-content;
+      margin-bottom: clamp(0.75rem, 1.5vw, 1.5rem);
+    }
+
+    .badge.mint { background: var(--badge-mint); color: #2d5a3d; }
+    .badge.pink { background: var(--badge-pink); color: #7a3a5a; }
+    .badge.yellow { background: var(--badge-yellow); color: #5a5040; }
+
+    h1 {
+      font-size: var(--title-size);
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.1;
+      margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+    }
+
+    .subtitle {
+      font-size: var(--subtitle-size);
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: clamp(1rem, 2vw, 2rem);
+    }
+
+    /* 右侧装饰性竖条 */
+    .pills {
+      position: absolute;
+      right: clamp(1rem, 3vw, 2rem);
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pill {
+      width: clamp(30px, 4vw, 50px);
+      height: clamp(60px, 8vw, 100px);
+      background: rgba(255,255,255,0.6);
+      border-radius: 25px;
+    }
+
+    .pill:nth-child(1) { height: 60%; }
+    .pill:nth-child(2) { height: 80%; }
+    .pill:nth-child(3) { height: 100%; }
+    .pill:nth-child(4) { height: 70%; }
+
+    /* 网格纹理 */
+    .grid-pattern {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+    }
+
+    /* 进度条 */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--badge-mint), var(--badge-pink));
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
+
+    /* 导航点 */
+    .nav-dots {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .nav-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-dots span.active {
+      background: var(--text-dark);
+      transform: scale(1.2);
+    }
+
+    /* ===========================================
+       通用内容页样式
+       =========================================== */
+    .slide-content h2 {
+      font-size: clamp(1.4rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: clamp(1rem, 2vw, 2rem);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+      gap: clamp(0.5rem, 1.5vw, 1.5rem);
+    }
+
+    .content-card {
+      background: white;
+      border-radius: 16px;
+      padding: clamp(1rem, 2vw, 2rem);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .content-card h3 {
+      font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .content-card p {
+      font-size: var(--body-size);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .icon {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      margin-bottom: 0.5rem;
+    }
+
+    /* 代码块样式 */
+    .code-block {
+      background: #2d2d2d;
+      border-radius: 12px;
+      padding: clamp(1rem, 2vw, 1.5rem);
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: var(--body-size);
+      color: #e0e0e0;
+      max-width: 700px;
+      margin: clamp(0.5rem, 1vw, 1rem) 0;
+    }
+
+    .code-block .prompt {
+      color: #4ade80;
+    }
+
+    .code-block .comment {
+      color: #888;
+    }
+
+    .code-block .keyword {
+      color: #ff79c6;
+    }
+
+    .code-block .string {
+      color: #f1fa8c;
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .slide-title { grid-template-columns: 1fr; }
+      .panel-lavender { display: none; }
+      .nav-dots { bottom: 10px; right: 10px; }
+    }
+
+    @media (max-height: 600px) {
+      :root {
+        --title-size: clamp(1.3rem, 4vw, 2.5rem);
+        --subtitle-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      }
+      .nav-dots { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 进度条 -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <!-- 导航点 -->
+  <nav class="nav-dots" id="navDots"></nav>
+
+  <!-- ===========================================
+       SLIDE 1: 标题页
+       =========================================== -->
+  <section class="slide" id="slide-1">
+    <div class="slide-title">
+      <div class="panel-peach">
+        <span class="badge pink reveal">💡 新一代编程方式</span>
+        <h1 class="reveal">Vibe Coding</h1>
+        <p class="subtitle reveal">AI 时代的编程方式</p>
+        <span class="badge mint reveal">用自然语言对话，让 AI 帮你写代码</span>
+      </div>
+      <div class="panel-lavender">
+        <div class="grid-pattern"></div>
+        <div class="pills">
+          <div class="pill reveal"></div>
+          <div class="pill reveal"></div>
+          <div class="pill reveal"></div>
+          <div class="pill reveal"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================================
+       SLIDE 2: 什么是 Vibe Coding
+       =========================================== -->
+  <section class="slide" id="slide-2">
+    <div class="slide-content">
+      <span class="badge yellow reveal">📖 概念理解</span>
+      <h2 class="reveal">什么是 Vibe Coding？</h2>
+      <div class="content-grid">
+        <div class="content-card reveal">
+          <div class="icon">🗣️</div>
+          <h3>描述你的想法</h3>
+          <p>用自然语言告诉 AI 你想要什么功能，不需要记住复杂的语法</p>
+        </div>
+        <div class="content-card reveal">
+          <div class="icon">✨</div>
+          <h3>AI 生成代码</h3>
+          <p>AI 根据你的描述自动编写代码，你只需要理解和审阅</p>
+        </div>
+        <div class="content-card reveal">
+          <div class="icon">🔧</div>
+          <h3>迭代优化</h3>
+          <p>不满意的地方直接告诉 AI 修改，持续迭代直到完美</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================================
+       SLIDE 3: 核心理念
+       =========================================== -->
+  <section class="slide" id="slide-3">
+    <div class="slide-content">
+      <span class="badge mint reveal">💭 核心理念</span>
+      <h2 class="reveal">Vibe Coding 的核心思想</h2>
+      <div class="content-card reveal" style="max-width: 700px;">
+        <p style="font-size: clamp(1rem, 2vw, 1.5rem); line-height: 1.6; color: var(--text-dark);">
+          "你不是在写代码，你是在
+          <strong style="color: #7a3a5a;">指挥一个会写代码的助手</strong>。"
+        </p>
+      </div>
+      <div class="content-grid" style="margin-top: clamp(1rem, 2vw, 2rem);">
+        <div class="content-card reveal">
+          <h3>🎯 专注思考</h3>
+          <p>把精力放在"想要什么"上，而不是"怎么写"上</p>
+        </div>
+        <div class="content-card reveal">
+          <h3>🔄 快速迭代</h3>
+          <p>小步快跑，不断调整，每次修改都很快</p>
+        </div>
+        <div class="content-card reveal">
+          <h3>✅ 保持掌控</h3>
+          <p>AI 是助手，你才是主厨，每行代码都需要你认可</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================================
+       SLIDE 4: 为什么学习
+       =========================================== -->
+  <section class="slide" id="slide-4">
+    <div class="slide-content">
+      <span class="badge pink reveal">🎓 针对新生</span>
+      <h2 class="reveal">为什么大一新生应该学？</h2>
+      <div class="content-grid">
+        <div class="content-card reveal">
+          <div class="icon">🚀</div>
+          <h3>降低门槛</h3>
+          <p>不需要死记硬背语法，也能写出可用的程序</p>
+        </div>
+        <div class="content-card reveal">
+          <div class="icon">⏰</div>
+          <h3>提高效率</h3>
+          <p>同样的时间，可以完成更多的项目练习</p>
+        </div>
+        <div class="content-card reveal">
+          <div class="icon">🧠</div>
+          <h3>聚焦逻辑</h3>
+          <p>把注意力放在解决问题上，而不是语法细节</p>
+        </div>
+        <div class="content-card reveal">
+          <div class="icon">🌟</div>
+          <h3>与时俱进</h3>
+          <p>这是行业趋势，早学早受益</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================================
+           SLIDE 5: Agent 原理简介
+           =========================================== -->
+      <section class="slide" id="slide-5">
+        <div class="slide-content">
+          <span class="badge yellow reveal">🔬 原理探索</span>
+          <h2 class="reveal">AI 代码生成是怎么工作的？</h2>
+          <div class="content-card reveal" style="max-width: 750px; margin-bottom: 1.5rem; border-left: 4px solid #c8f0d8;">
+            <p style="font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: var(--text-dark); line-height: 1.6;">ReAct = <strong style="color: #7a3a5a;">Re</strong>ason + <strong style="color: #7a3a5a;">Act</strong>ion</p>
+            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-top: 0.5rem;">让 AI 边思考边行动，形成推理-行动的循环</p>
+          </div>
+          <div class="content-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="content-card reveal">
+              <span class="badge mint" style="margin-bottom: 0.75rem;">1</span>
+              <h3>理解需求</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">AI 阅读你的描述，理解要做什么</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge pink" style="margin-bottom: 0.75rem;">2</span>
+              <h3>规划步骤</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">思考需要哪几步来完成，每个步骤怎么做</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge yellow" style="margin-bottom: 0.75rem;">3</span>
+              <h3>生成代码</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">根据计划写出具体代码，并检查是否正确</p>
+            </div>
+          </div>
+          <div class="content-card reveal" style="max-width: 700px; margin-top: 1.5rem; background: #f8f6f1;">
+            <p style="font-size: var(--body-size); color: var(--text-secondary);">
+              <strong>💡 简单理解：</strong>AI 就像是有一个"思考过程"，不是凭空写代码，而是一边想"这一步该做什么"，一边写代码
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 6: Cursor 介绍
+           =========================================== -->
+      <section class="slide" id="slide-6">
+        <div class="slide-content">
+          <span class="badge mint reveal">🔧 工具介绍</span>
+          <h2 class="reveal">Cursor - 智能代码编辑器</h2>
+          <div class="content-grid">
+            <div class="content-card reveal">
+              <div class="icon">🎯</div>
+              <h3>AI 原生 IDE</h3>
+              <p>专为 AI 协作设计的代码编辑器，基于 VS Code</p>
+            </div>
+            <div class="content-card reveal">
+              <div class="icon">💬</div>
+              <h3>对话式编程</h3>
+              <p>侧边栏对话，直接描述需求，AI 帮你写代码</p>
+            </div>
+            <div class="content-card reveal">
+              <div class="icon">⚡</div>
+              <h3>实时补全</h3>
+              <p>输入时 AI 自动预测下一行代码</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 7: Cursor 功能详情
+           =========================================== -->
+      <section class="slide" id="slide-7">
+        <div class="slide-content">
+          <span class="badge yellow reveal">🔍 核心功能</span>
+          <h2 class="reveal">Cursor 的三大核心功能</h2>
+          <div class="content-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="content-card reveal">
+              <span class="badge pink" style="margin-bottom: 0.75rem;">1</span>
+              <h3>Ctrl+L 对话</h3>
+              <p>打开 AI 对话窗口，输入自然语言描述需求，AI 直接在代码中修改</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge mint" style="margin-bottom: 0.75rem;">2</span>
+              <h3>Tab 自动补全</h3>
+              <p>AI 预测下一段代码，按 Tab 直接采纳，比 GitHub Copilot 更懂上下文</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge yellow" style="margin-bottom: 0.75rem;">3</span>
+              <h3>Ctrl+K 代码生成</h3>
+              <p>选中代码块，告诉 AI 你想怎么改，比如"把这个函数改成异步"</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 8: Cursor 实战演示
+           =========================================== -->
+      <section class="slide" id="slide-8">
+        <div class="slide-content">
+          <span class="badge pink reveal">🧪 实操演示</span>
+          <h2 class="reveal">用 Cursor 做一个按钮</h2>
+          <div class="content-card reveal" style="max-width: 800px; margin-bottom: 1rem;">
+            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 1rem;">在 Cursor 中打开一个 HTML 文件，然后输入：</p>
+            <div class="code-block">
+<span class="comment">/* 在 Ctrl+L 对话框中输入： */</span>
+<span class="string">"给我写一个蓝色按钮，点击弹出 'Hello World'"</span>
+            </div>
+          </div>
+          <div class="content-card reveal" style="max-width: 800px;">
+            <p style="font-size: var(--body-size); color: var(--text-dark);">
+              <strong>✨ AI 会自动生成：</strong>
+            </p>
+            <div class="code-block">
+<span class="keyword">&lt;button</span> <span class="string">style</span>="background: blue; color: white; padding: 10px 20px;"
+  <span class="keyword">onclick</span>="alert('Hello World')"&gt;
+  点击我
+<span class="keyword">&lt;/button&gt;</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 9: Claude Code 介绍
+           =========================================== -->
+      <section class="slide" id="slide-9">
+        <div class="slide-content">
+          <span class="badge mint reveal">💻 工具介绍</span>
+          <h2 class="reveal">Claude Code - 命令行助手</h2>
+          <div class="content-grid">
+            <div class="content-card reveal">
+              <div class="icon">🖥️</div>
+              <h3>终端内直接使用</h3>
+              <p>在命令行中输入需求，AI 自动创建文件、修改代码、运行测试</p>
+            </div>
+            <div class="content-card reveal">
+              <div class="icon">📁</div>
+              <h3>项目级理解</h3>
+              <p>能够阅读整个项目代码，理解项目结构和依赖关系</p>
+            </div>
+            <div class="content-card reveal">
+              <div class="icon">🔗</div>
+              <h3>Git 集成</h3>
+              <p>自动提交代码、创建分支、查看 diff，处理 Git 工作流</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 10: Claude Code 工作流程
+           =========================================== -->
+      <section class="slide" id="slide-10">
+        <div class="slide-content">
+          <span class="badge yellow reveal">⚙️ 工作流程</span>
+          <h2 class="reveal">Claude Code 典型工作流程</h2>
+          <div class="content-card reveal" style="max-width: 750px;">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge mint" style="flex-shrink: 0;">Step 1</span>
+                <code style="background: #f0f0f0; padding: 0.5rem 1rem; border-radius: 8px; font-family: monospace;">npx claude-code</code>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge pink" style="flex-shrink: 0;">Step 2</span>
+                <span>描述你要做什么："帮我创建一个 React 组件"</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge yellow" style="flex-shrink: 0;">Step 3</span>
+                <span>Claude 自动创建/修改文件，可直接运行</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge mint" style="flex-shrink: 0;">Step 4</span>
+                <span>检查结果，不满意就说"改一下..."</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 11: Claude Code 实战
+           =========================================== -->
+      <section class="slide" id="slide-11">
+        <div class="slide-content">
+          <span class="badge pink reveal">🧪 实操演示</span>
+          <h2 class="reveal">用 Claude Code 创建项目</h2>
+          <div class="content-card reveal" style="max-width: 800px; margin-bottom: 1rem;">
+            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.75rem;">在终端输入：</p>
+            <div class="code-block">
+<span class="prompt">$</span> npx claude-code
+<span class="prompt">$</span> <span class="string">"创建一个 HTML 页面，包含一个输入框和一个按钮"</span>
+            </div>
+          </div>
+          <div class="content-card reveal" style="max-width: 800px; margin-bottom: 1rem;">
+            <p style="font-size: var(--body-size); color: var(--text-dark); margin-bottom: 0.5rem;"><strong>✨ Claude 会：</strong></p>
+            <p style="font-size: var(--body-size); color: var(--text-secondary);">1. 创建 index.html 文件<br>2. 写入完整的 HTML 代码<br>3. 询问是否要打开浏览器预览</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 12: 技巧 1
+           =========================================== -->
+      <section class="slide" id="slide-12">
+        <div class="slide-content">
+          <span class="badge mint reveal">💡 技巧 1/3</span>
+          <h2 class="reveal">描述要具体</h2>
+          <div class="content-grid">
+            <div class="content-card reveal" style="border: 2px solid #e8b4b8;">
+              <span class="badge pink" style="margin-bottom: 0.75rem;">❌ 不好的描述</span>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">"帮我写个按钮"</p>
+            </div>
+            <div class="content-card reveal" style="border: 2px solid #c8f0d8;">
+              <span class="badge mint" style="margin-bottom: 0.75rem;">✅ 好的描述</span>
+              <p style="font-size: var(--body-size); color: var(--text-dark);">"写一个圆形红色按钮，边框圆角 20px，点击后弹出 '提交成功' 提示"</p>
+            </div>
+          </div>
+          <div class="content-card reveal" style="max-width: 700px; margin-top: 1.5rem;">
+            <h3>🎯 为什么重要？</h3>
+            <p style="font-size: var(--body-size); color: var(--text-secondary);">越具体的描述，AI 越能准确理解你的需求，减少返工次数</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 13: 技巧 2
+           =========================================== -->
+      <section class="slide" id="slide-13">
+        <div class="slide-content">
+          <span class="badge mint reveal">💡 技巧 2/3</span>
+          <h2 class="reveal">分步骤进行</h2>
+          <div class="content-card reveal" style="max-width: 750px; margin-bottom: 1.5rem;">
+            <p style="font-size: clamp(1rem, 2vw, 1.3rem); color: var(--text-dark); margin-bottom: 1rem;">不要试图一次性完成整个项目</p>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+              <span class="badge yellow">Step 1</span>
+              <span style="color: var(--text-secondary);">先做页面结构</span>
+              <span style="color: var(--text-secondary);">→</span>
+              <span class="badge yellow">Step 2</span>
+              <span style="color: var(--text-secondary);">添加样式</span>
+              <span style="color: var(--text-secondary);">→</span>
+              <span class="badge yellow">Step 3</span>
+              <span style="color: var(--text-secondary);">实现交互</span>
+            </div>
+          </div>
+          <div class="content-grid">
+            <div class="content-card reveal">
+              <h3>🌱 小步快跑</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">每一步都能看到成果，发现问题及时调整</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>🔍 便于调试</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">出错了能快速定位是哪一步的问题</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 14: 技巧 3
+           =========================================== -->
+      <section class="slide" id="slide-14">
+        <div class="slide-content">
+          <span class="badge mint reveal">💡 技巧 3/3</span>
+          <h2 class="reveal">检查并修改</h2>
+          <div class="content-card reveal" style="max-width: 700px; margin-bottom: 1.5rem;">
+            <h3 style="margin-bottom: 1rem;">⚠️ AI 生成的代码需要你审核</h3>
+            <p style="font-size: var(--body-size); color: var(--text-secondary); line-height: 1.6;">AI 可能会生成有 bug 的代码，或者实现和你想象的不一样。每次生成后，先运行看看效果，发现问题立刻告诉 AI 怎么改。</p>
+          </div>
+          <div class="content-card reveal">
+            <h3>常用修改指令：</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem;">
+              <span class="badge yellow">"把这个按钮变大"</span>
+              <span class="badge pink">"颜色改成绿色"</span>
+              <span class="badge mint">"添加点击效果"</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 15: 实战案例 1
+           =========================================== -->
+      <section class="slide" id="slide-15">
+        <div class="slide-content">
+          <span class="badge pink reveal">🧩 练习 1</span>
+          <h2 class="reveal">案例：做一个计数器</h2>
+          <div class="content-card reveal" style="max-width: 750px; margin-bottom: 1rem;">
+            <h3 style="margin-bottom: 0.75rem;">需求描述：</h3>
+            <div class="code-block">
+<span class="comment">/* 输入： */</span>
+<span class="string">"创建一个页面，中间显示数字 0，底部有 '+' 和 '-' 两个按钮，
+点击 '+' 数字加 1，点击 '-' 数字减 1"</span>
+            </div>
+          </div>
+          <div class="content-card reveal" style="max-width: 750px;">
+            <h3 style="margin-bottom: 0.75rem;">你会学到的：</h3>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <span class="badge mint">HTML 结构</span>
+              <span class="badge pink">CSS 布局</span>
+              <span class="badge yellow">JavaScript 事件</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 16: 实战案例 2
+           =========================================== -->
+      <section class="slide" id="slide-16">
+        <div class="slide-content">
+          <span class="badge pink reveal">🧩 练习 2</span>
+          <h2 class="reveal">案例：做一个待办清单</h2>
+          <div class="content-card reveal" style="max-width: 750px; margin-bottom: 1rem;">
+            <h3 style="margin-bottom: 0.75rem;">需求描述：</h3>
+            <div class="code-block">
+<span class="comment">/* 输入： */</span>
+<span class="string">"创建一个待办事项页面，上面是一个输入框和一个添加按钮，
+下面是一列表格，每行显示待办事项，最右边有删除按钮"</span>
+            </div>
+          </div>
+          <div class="content-card reveal" style="max-width: 750px;">
+            <h3 style="margin-bottom: 0.75rem;">你会学到的：</h3>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <span class="badge mint">数组操作</span>
+              <span class="badge pink">DOM 操作</span>
+              <span class="badge yellow">数据持久化</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 17: 常见错误
+           =========================================== -->
+      <section class="slide" id="slide-17">
+        <div class="slide-content">
+          <span class="badge yellow reveal">⚠️ 注意事项</span>
+          <h2 class="reveal">新手常见的错误</h2>
+          <div class="content-grid">
+            <div class="content-card reveal">
+              <h3 style="color: #c41e3a;">❌ 完全不看代码</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">AI 写的代码不一定对，必须自己读一遍理解</p>
+            </div>
+            <div class="content-card reveal">
+              <h3 style="color: #c41e3a;">❌ 一次说太多</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">"帮我做一个抖音"，这种需求 AI 无法准确完成</p>
+            </div>
+            <div class="content-card reveal">
+              <h3 style="color: #c41e3a;">❌ 不检查直接运行</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">先看懂代码逻辑，确认没问题再运行</p>
+            </div>
+            <div class="content-card reveal">
+              <h3 style="color: #c41e3a;">❌ 遇到问题不描述</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">出错了把错误信息复制给 AI，它会帮你分析</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 18: 学习资源
+           =========================================== -->
+      <section class="slide" id="slide-18">
+        <div class="slide-content">
+          <span class="badge mint reveal">📚 学习资源</span>
+          <h2 class="reveal">继续深入学习</h2>
+          <div class="content-grid">
+            <div class="content-card reveal">
+              <div class="icon">🎯</div>
+              <h3>Cursor 官网</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">cursor.com - 下载体验</p>
+            </div>
+            <div class="content-card reveal">
+              <div class="icon">📖</div>
+              <h3>Claude 官方文档</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">docs.anthropic.com - 深入学习</p>
+            </div>
+            <div class="content-card reveal">
+              <div class="icon">🎥</div>
+              <h3>B 站教程</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">搜索 "Cursor 教程" / "Claude Code 教程"</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 19: 总结
+           =========================================== -->
+      <section class="slide" id="slide-19">
+        <div class="slide-content">
+          <span class="badge mint reveal">✨ 总结</span>
+          <h2 class="reveal">今天学到的重要内容</h2>
+          <div class="content-card reveal" style="max-width: 750px; margin-bottom: 1.5rem;">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge pink">1</span>
+                <span>Vibe Coding 是用自然语言与 AI 协作编程的方式</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge mint">2</span>
+                <span>Cursor 适合 IDE 场景，Claude Code 适合命令行场景</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge yellow">3</span>
+                <span>关键技巧：描述具体、分步骤、保持审核</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge pink">4</span>
+                <span>AI 是助手，你才是主厨，要保持对代码的理解和掌控</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 20: Q&A
+           =========================================== -->
+      <section class="slide" id="slide-20">
+        <div class="slide-title">
+          <div class="panel-peach">
+            <span class="badge pink reveal">🙋 Q&A</span>
+            <h1 class="reveal">有问题？</h1>
+            <p class="subtitle reveal">欢迎提问！</p>
+            <div style="margin-top: 2rem;">
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">也可以课后实践：</p>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem;">
+                <span class="badge mint">下载 Cursor</span>
+                <span class="badge pink">尝试 Claude Code</span>
+                <span class="badge yellow">做个计数器试试</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel-lavender">
+            <div class="grid-pattern"></div>
+            <div class="pills">
+              <div class="pill reveal"></div>
+              <div class="pill reveal"></div>
+              <div class="pill reveal"></div>
+              <div class="pill reveal"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <script>
+    class SlidePresentation {
+      constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.totalSlides = this.slides.length;
+        this.currentSlide = 0;
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupProgressBar();
+        this.setupNavDots();
+      }
+
+      setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              const slideIndex = Array.from(this.slides).indexOf(entry.target);
+              this.currentSlide = slideIndex;
+              this.updateProgress();
+              this.updateNavDots();
+            }
+          });
+        }, { threshold: 0.5 });
+
+        this.slides.forEach(slide => observer.observe(slide));
+      }
+
+      setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            this.nextSlide();
+          } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            this.prevSlide();
+          }
+        });
+      }
+
+      nextSlide() {
+        if (this.currentSlide < this.totalSlides - 1) {
+          this.currentSlide++;
+          this.scrollToSlide(this.currentSlide);
+        }
+      }
+
+      prevSlide() {
+        if (this.currentSlide > 0) {
+          this.currentSlide--;
+          this.scrollToSlide(this.currentSlide);
+        }
+      }
+
+      scrollToSlide(index) {
+        this.slides[index].scrollIntoView({ behavior: 'smooth' });
+      }
+
+      setupProgressBar() {
+        this.progressBar = document.getElementById('progressBar');
+      }
+
+      updateProgress() {
+        const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+        this.progressBar.style.width = progress + '%';
+      }
+
+      setupNavDots() {
+        this.navDots = document.getElementById('navDots');
+        this.navDots.innerHTML = '';
+        for (let i = 0; i < this.totalSlides; i++) {
+          const dot = document.createElement('span');
+          if (i === 0) dot.classList.add('active');
+          dot.addEventListener('click', () => {
+            this.currentSlide = i;
+            this.scrollToSlide(i);
+          });
+          this.navDots.appendChild(dot);
+        }
+      }
+
+      updateNavDots() {
+        const dots = this.navDots.querySelectorAll('span');
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === this.currentSlide);
+        });
+      }
+    }
+
+    new SlidePresentation();
+  </script>
+</body>
+</html>
