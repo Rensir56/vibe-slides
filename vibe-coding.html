@@ -260,6 +260,8 @@
       color: #e0e0e0;
       max-width: 700px;
       margin: clamp(0.5rem, 1vw, 1rem) 0;
+      white-space: pre-wrap;
+      line-height: 1.45;
     }
 
     .code-block .prompt {
@@ -612,6 +614,188 @@
       <!-- ===========================================
            SLIDE 12: Skills 扩展
            =========================================== -->
+      <section class="slide" id="slide-skill-1">
+        <div class="slide-content">
+          <span class="badge mint reveal">🧰 Claude Code Skill</span>
+          <h2 class="reveal">Skill 是什么？</h2>
+          <div class="content-card reveal" style="max-width: 760px; margin-bottom: 1.5rem; border-left: 4px solid #c8f0d8;">
+            <p style="font-size: clamp(1rem, 2vw, 1.35rem); color: var(--text-dark); line-height: 1.6;">
+              Skill = 给 Claude Code 安装一套
+              <strong style="color: #7a3a5a;">可复用的做事方法</strong>
+            </p>
+            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-top: 0.5rem;">
+              当你总是在复制同一段提示词、同一份检查清单、同一个工作流程时，就可以把它沉淀成 skill。
+            </p>
+          </div>
+          <div class="content-grid">
+            <div class="content-card reveal">
+              <div class="icon">📌</div>
+              <h3>固定流程</h3>
+              <p>把“先检查、再修改、再测试”的步骤写进 SKILL.md，减少每次解释</p>
+            </div>
+            <div class="content-card reveal">
+              <div class="icon">🧠</div>
+              <h3>按需加载</h3>
+              <p>Skill 的正文只有用到时才进入上下文，比把所有规则塞进 CLAUDE.md 更轻</p>
+            </div>
+            <div class="content-card reveal">
+              <div class="icon">⚡</div>
+              <h3>一键调用</h3>
+              <p>可以输入 /skill-name 直接触发，也可以让 Claude 在相关场景自动使用</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 13: Skill 获取方式
+           =========================================== -->
+      <section class="slide" id="slide-skill-2">
+        <div class="slide-content">
+          <span class="badge yellow reveal">📦 获取方式</span>
+          <h2 class="reveal">Skill 从哪里来？</h2>
+          <div class="content-grid">
+            <div class="content-card reveal">
+              <span class="badge mint" style="margin-bottom: 0.75rem;">方式 1</span>
+              <h3>下载别人写好的</h3>
+              <p>从课程仓库、团队仓库、插件或公开示例中复制到自己的 skills 目录</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge pink" style="margin-bottom: 0.75rem;">方式 2</span>
+              <h3>自己创建</h3>
+              <p>新建一个文件夹，写一个 SKILL.md，把常用流程整理成清晰步骤</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge yellow" style="margin-bottom: 0.75rem;">方式 3</span>
+              <h3>让 AI 生成</h3>
+              <p>直接告诉 Claude：“把我刚才这套流程整理成一个 skill”</p>
+            </div>
+          </div>
+          <div class="content-card reveal" style="max-width: 760px; margin-top: 1.5rem;">
+            <h3 style="margin-bottom: 0.75rem;">下载后放在哪里？</h3>
+            <div class="code-block">
+# 个人通用：所有项目都能用
+mkdir -p ~/.claude/skills
+cp -r downloaded-skill ~/.claude/skills/
+
+# 项目共享：只在当前项目生效，也可以提交到仓库
+mkdir -p .claude/skills
+cp -r downloaded-skill .claude/skills/
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 14: Skill 基本结构
+           =========================================== -->
+      <section class="slide" id="slide-skill-3">
+        <div class="slide-content">
+          <span class="badge pink reveal">📝 基本结构</span>
+          <h2 class="reveal">一个 Skill 长什么样？</h2>
+          <div class="content-card reveal" style="max-width: 850px;">
+            <div class="code-block" style="max-width: 100%;">
+---
+name: review-homework
+description: Review a beginner programming homework submission and give actionable feedback.
+---
+
+## Instructions
+
+1. Read the changed files first.
+2. Explain the main issue in simple language.
+3. Suggest one small improvement at a time.
+4. Do not rewrite everything unless the user asks.
+            </div>
+          </div>
+          <div class="content-grid" style="margin-top: 1.5rem;">
+            <div class="content-card reveal">
+              <h3>Frontmatter</h3>
+              <p>顶部的 YAML 区域，告诉 Claude 这个 skill 叫什么、什么时候用</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>Instructions</h3>
+              <p>下面的 Markdown 区域，写具体步骤、约束、输出格式和注意事项</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 15: 让 AI 生成 Skill
+           =========================================== -->
+      <section class="slide" id="slide-skill-4">
+        <div class="slide-content">
+          <span class="badge mint reveal">🤖 AI 生成</span>
+          <h2 class="reveal">让 Claude 帮你写 Skill</h2>
+          <div class="content-card reveal" style="max-width: 850px; margin-bottom: 1rem;">
+            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.75rem;">可以直接这样说：</p>
+            <div class="code-block" style="max-width: 100%;">
+把下面这套流程整理成 Claude Code skill：
+1. 每次写完代码先运行测试
+2. 再查看 git diff
+3. 帮我总结改了什么
+4. 最后生成一条清晰的 commit message
+
+请给我目录结构和完整 SKILL.md
+            </div>
+          </div>
+          <div class="content-grid">
+            <div class="content-card reveal">
+              <h3>先说目标</h3>
+              <p>这个 skill 是用来审代码、写提交、部署，还是生成文档？</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>再说边界</h3>
+              <p>哪些命令能跑，哪些事情必须先问你，哪些文件不能改</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>最后试运行</h3>
+              <p>放到目录里，用 /skill-name 调用一次，看看行为是否符合预期</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 16: Git Commit Skill 案例
+           =========================================== -->
+      <section class="slide" id="slide-skill-5">
+        <div class="slide-content">
+          <span class="badge yellow reveal">🧪 案例：自动提交</span>
+          <h2 class="reveal">写完代码后直接 git commit</h2>
+          <div class="content-card reveal" style="max-width: 850px;">
+            <div class="code-block" style="max-width: 100%;">
+---
+name: commit
+description: Stage and commit the current changes after reviewing the diff.
+disable-model-invocation: true
+allowed-tools: Bash(git status *) Bash(git diff *) Bash(git add *) Bash(git commit *)
+---
+
+1. Run git status and git diff.
+2. Summarize the changes and mention any risk.
+3. If the diff looks ready, run git add for the relevant files.
+4. Create a concise commit message and run git commit.
+            </div>
+          </div>
+          <div class="content-grid" style="margin-top: 1.5rem;">
+            <div class="content-card reveal">
+              <h3>为什么手动触发？</h3>
+              <p>commit 有副作用，用 disable-model-invocation: true，避免 AI 自己决定提交</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>为什么先看 diff？</h3>
+              <p>提交前必须知道改了什么，避免把调试代码、密钥、无关文件一起提交</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>怎么调用？</h3>
+              <p>代码写完后输入 /commit，让 Claude 按固定流程检查并提交</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="slide" id="slide-12">
         <div class="slide-content">
           <span class="badge mint reveal">🧩 Skills 扩展</span>
@@ -848,6 +1032,11 @@
               <p style="font-size: var(--body-size); color: var(--text-secondary);">docs.anthropic.com - 深入学习</p>
             </div>
             <div class="content-card reveal">
+              <div class="icon">🧰</div>
+              <h3>Claude Code Skills</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">code.claude.com/docs - 学习创建和分享 skill</p>
+            </div>
+            <div class="content-card reveal">
               <div class="icon">🎥</div>
               <h3>B 站教程</h3>
               <p style="font-size: var(--body-size); color: var(--text-secondary);">搜索 "Cursor 教程" / "Claude Code 教程"</p>
@@ -879,6 +1068,10 @@
               </div>
               <div style="display: flex; align-items: center; gap: 1rem;">
                 <span class="badge pink">4</span>
+                <span>Skill 可以把重复流程沉淀成 /skill-name，一次写好，多次复用</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge mint">5</span>
                 <span>AI 是助手，你才是主厨，要保持对代码的理解和掌控</span>
               </div>
             </div>
@@ -900,7 +1093,7 @@
               <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem;">
                 <span class="badge mint">下载 Cursor</span>
                 <span class="badge pink">尝试 Claude Code</span>
-                <span class="badge yellow">做个计数器试试</span>
+                <span class="badge yellow">写一个 commit skill</span>
               </div>
             </div>
           </div>
