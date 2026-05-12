@@ -280,11 +280,108 @@
       color: #f1fa8c;
     }
 
+    .skill-anatomy .slide-content {
+      justify-content: center;
+    }
+
+    .skill-anatomy h2 {
+      font-size: clamp(1.25rem, 3vw, 2.35rem);
+      margin-bottom: clamp(0.6rem, 1.2vw, 1rem);
+    }
+
+    .skill-anatomy .content-grid {
+      gap: clamp(0.45rem, 1vw, 0.9rem);
+    }
+
+    .skill-anatomy .content-card {
+      padding: clamp(0.65rem, 1.3vw, 1.05rem);
+    }
+
+    .skill-anatomy .content-card h3 {
+      margin-bottom: 0.35rem;
+    }
+
+    .skill-anatomy .content-card p {
+      line-height: 1.38;
+    }
+
+    .skill-anatomy .code-block {
+      font-size: clamp(0.52rem, 0.8vw, 0.7rem);
+      line-height: 1.28;
+      padding: clamp(0.6rem, 1vw, 0.85rem);
+      margin: 0.45rem 0 0;
+      overflow-wrap: anywhere;
+    }
+
+    .skill-parts {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: clamp(0.45rem, 1vw, 0.85rem);
+    }
+
+    .inline-code {
+      background: #f0f0f0;
+      border-radius: 6px;
+      color: var(--text-dark);
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.9em;
+      padding: 0.08rem 0.28rem;
+    }
+
+    .skill-link {
+      color: var(--text-dark);
+      text-decoration: none;
+      border-bottom: 2px solid var(--badge-mint);
+    }
+
+    .skill-link:hover {
+      border-bottom-color: var(--badge-pink);
+    }
+
+    .skill-builder h2 {
+      font-size: clamp(1.3rem, 3.2vw, 2.5rem);
+      margin-bottom: clamp(0.7rem, 1.4vw, 1.1rem);
+    }
+
+    .skill-builder .content-grid {
+      gap: clamp(0.5rem, 1.1vw, 1rem);
+    }
+
+    .skill-builder .content-card {
+      padding: clamp(0.8rem, 1.5vw, 1.2rem);
+    }
+
+    .skill-builder .code-block {
+      font-size: clamp(0.6rem, 0.95vw, 0.78rem);
+      line-height: 1.35;
+      padding: clamp(0.7rem, 1.2vw, 1rem);
+    }
+
+    .skill-recs h2 {
+      font-size: clamp(1.35rem, 3.4vw, 2.6rem);
+      margin-bottom: clamp(0.8rem, 1.5vw, 1.2rem);
+    }
+
+    .skill-recs .content-grid {
+      gap: clamp(0.55rem, 1.2vw, 1rem);
+    }
+
+    .skill-recs .content-card {
+      padding: clamp(0.8rem, 1.5vw, 1.25rem);
+    }
+
+    .skill-recs .content-card p {
+      line-height: 1.4;
+    }
+
     /* 响应式 */
     @media (max-width: 768px) {
       .slide-title { grid-template-columns: 1fr; }
       .panel-lavender { display: none; }
       .nav-dots { bottom: 10px; right: 10px; }
+      .skill-anatomy .content-grid,
+      .skill-builder .content-grid,
+      .skill-recs .content-grid,
+      .skill-parts { grid-template-columns: 1fr !important; }
     }
 
     @media (max-height: 600px) {
@@ -689,33 +786,55 @@ cp -r downloaded-skill .claude/skills/
       <!-- ===========================================
            SLIDE 14: Skill 基本结构
            =========================================== -->
-      <section class="slide" id="slide-skill-3">
+      <section class="slide skill-anatomy" id="slide-skill-3">
         <div class="slide-content">
           <span class="badge pink reveal">📝 基本结构</span>
-          <h2 class="reveal">一个 Skill 长什么样？</h2>
-          <div class="content-card reveal" style="max-width: 850px;">
-            <div class="code-block" style="max-width: 100%;">
+          <h2 class="reveal">真实 Skill 文件结构</h2>
+          <div class="content-grid" style="grid-template-columns: 0.78fr 1.22fr;">
+            <div class="content-card reveal">
+              <h3>一个 skill 是一个目录</h3>
+              <p>官方结构强调“渐进加载”：先看 metadata，触发后读 SKILL.md，需要时再读其它文件。</p>
+              <div class="code-block" style="max-width: 100%;">
+my-skill/
+├── SKILL.md
+├── references/   # 长文档，按需读取
+├── scripts/      # 稳定脚本，按需执行
+└── assets/       # 模板/素材，给最终产物使用
+              </div>
+            </div>
+            <div class="content-card reveal">
+              <h3>SKILL.md 是入口文件</h3>
+              <div class="code-block" style="max-width: 100%;">
 ---
-name: review-homework
-description: Review a beginner programming homework submission and give actionable feedback.
+name: summarize-changes
+description: Use when the user asks to summarize current git changes.
+disable-model-invocation: true
+allowed-tools: Bash(git status *) Bash(git diff *)
 ---
 
 ## Instructions
-
-1. Read the changed files first.
-2. Explain the main issue in simple language.
-3. Suggest one small improvement at a time.
-4. Do not rewrite everything unless the user asks.
+1. Run git status and git diff.
+2. Summarize changed files and behavior changes.
+3. List risks and missing tests.
+              </div>
             </div>
           </div>
-          <div class="content-grid" style="margin-top: 1.5rem;">
+          <div class="content-grid skill-parts">
             <div class="content-card reveal">
-              <h3>Frontmatter</h3>
-              <p>顶部的 YAML 区域，告诉 Claude 这个 skill 叫什么、什么时候用</p>
+              <h3>YAML metadata</h3>
+              <p><span class="inline-code">name</span> 是调用名；<span class="inline-code">description</span> 是触发条件，要写清“什么时候用”。权限字段限制 skill 可以调用哪些工具。</p>
             </div>
             <div class="content-card reveal">
-              <h3>Instructions</h3>
-              <p>下面的 Markdown 区域，写具体步骤、约束、输出格式和注意事项</p>
+              <h3>工具权限</h3>
+              <p><span class="inline-code">allowed-tools</span> 像白名单，限制这个 skill 能跑哪些命令。提交、删除、部署这类动作尤其要收紧。</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>Markdown 正文</h3>
+              <p>写工作步骤、检查清单、输出格式和禁止事项。正文应短，把模型已经知道的常识删掉。</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>附加资源</h3>
+              <p><span class="inline-code">references</span> 放大段资料，<span class="inline-code">scripts</span> 放可重复执行的逻辑，<span class="inline-code">assets</span> 放模板素材。</p>
             </div>
           </div>
         </div>
@@ -724,34 +843,46 @@ description: Review a beginner programming homework submission and give actionab
       <!-- ===========================================
            SLIDE 15: 让 AI 生成 Skill
            =========================================== -->
-      <section class="slide" id="slide-skill-4">
+      <section class="slide skill-builder" id="slide-skill-4">
         <div class="slide-content">
           <span class="badge mint reveal">🤖 AI 生成</span>
-          <h2 class="reveal">让 Claude 帮你写 Skill</h2>
+          <h2 class="reveal">让 AI 帮你生成 Skill</h2>
+          <div class="content-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 1rem;">
+            <div class="content-card reveal">
+              <span class="badge pink" style="margin-bottom: 0.75rem;">Codex</span>
+              <h3>直接调用 skill-creator</h3>
+              <p>输入 <span class="inline-code">$ skill-creator</span> 或直接说“帮我创建一个 skill”。Codex 会按规范生成目录、SKILL.md 和必要资源。</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge yellow" style="margin-bottom: 0.75rem;">Claude Code</span>
+              <h3>让 cc 写入 skills 目录</h3>
+              <p>官方方式是创建 <span class="inline-code">.claude/skills/name/SKILL.md</span> 或 <span class="inline-code">~/.claude/skills/name/SKILL.md</span>，再用 <span class="inline-code">/name</span> 调用。</p>
+            </div>
+          </div>
           <div class="content-card reveal" style="max-width: 850px; margin-bottom: 1rem;">
-            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.75rem;">可以直接这样说：</p>
+            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.75rem;">给 AI 的提示词可以这样写：</p>
             <div class="code-block" style="max-width: 100%;">
-把下面这套流程整理成 Claude Code skill：
-1. 每次写完代码先运行测试
-2. 再查看 git diff
-3. 帮我总结改了什么
-4. 最后生成一条清晰的 commit message
+把下面流程做成一个 skill，放到 .claude/skills/commit/SKILL.md：
+1. 写完代码后先运行测试
+2. 再查看 git status 和 git diff
+3. 总结改动、风险和缺失测试
+4. 只有我明确要求时才 git commit
 
-请给我目录结构和完整 SKILL.md
+请控制 allowed-tools，并说明如何用 /commit 调用
             </div>
           </div>
           <div class="content-grid">
             <div class="content-card reveal">
-              <h3>先说目标</h3>
+              <h3>目标</h3>
               <p>这个 skill 是用来审代码、写提交、部署，还是生成文档？</p>
             </div>
             <div class="content-card reveal">
-              <h3>再说边界</h3>
-              <p>哪些命令能跑，哪些事情必须先问你，哪些文件不能改</p>
+              <h3>边界</h3>
+              <p>哪些命令能跑，哪些动作必须先问你，哪些文件不能改？</p>
             </div>
             <div class="content-card reveal">
-              <h3>最后试运行</h3>
-              <p>放到目录里，用 /skill-name 调用一次，看看行为是否符合预期</p>
+              <h3>验证</h3>
+              <p>创建后用 <span class="inline-code">/commit</span> 试运行；确认它先检查 diff，不会在未授权时自动提交。</p>
             </div>
           </div>
         </div>
@@ -827,28 +958,37 @@ allowed-tools: Bash(git status *) Bash(git diff *) Bash(git add *) Bash(git comm
       </section>
 
       <!-- ===========================================
-           SLIDE 13: Plugins & MCP
+           SLIDE 13: GitHub Skills 推荐
            =========================================== -->
-      <section class="slide" id="slide-14">
+      <section class="slide skill-recs" id="slide-14">
         <div class="slide-content">
-          <span class="badge yellow reveal">🔌 Plugins & MCP</span>
-          <h2 class="reveal">扩展 Claude Code 的能力</h2>
-          <div class="content-grid">
+          <span class="badge yellow reveal">🌟 GitHub 推荐</span>
+          <h2 class="reveal">一些好用有趣的 Skills</h2>
+          <div class="content-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
             <div class="content-card reveal">
-              <div class="icon">🔌</div>
-              <h3>Plugins 插件</h3>
-              <p style="font-size: var(--body-size); color: var(--text-secondary);">安装第三方插件扩展功能，如新命令、UI 增强</p>
+              <span class="badge mint" style="margin-bottom: 0.75rem;">团队真实案例</span>
+              <h3>同事的 .skills</h3>
+              <p>优先看身边同事沉淀的 skill：代码提交、日报周报、评审清单、部署流程。它们最贴近团队规范，也最容易直接复用。</p>
             </div>
             <div class="content-card reveal">
-              <div class="icon">🔗</div>
-              <h3>MCP 协议</h3>
-              <p style="font-size: var(--body-size); color: var(--text-secondary);">Model Context Protocol，让 AI 连接外部数据源和工具</p>
+              <span class="badge pink" style="margin-bottom: 0.75rem;">PPT / 前端</span>
+              <h3><a class="skill-link" href="https://github.com/zarazhangrui/frontend-slides" target="_blank" rel="noopener">zarazhangrui/frontend-slides</a></h3>
+              <p>把内容生成漂亮的网页 PPT，也能把 PPT/PPTX 转成 HTML 演示稿；内置风格预览、响应式版式和导出分享流程。</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge yellow" style="margin-bottom: 0.75rem;">官方合集</span>
+              <h3><a class="skill-link" href="https://github.com/anthropics/skills" target="_blank" rel="noopener">anthropics/skills</a></h3>
+              <p>官方 skill 仓库，适合学习标准写法；重点看文档处理、表格、幻灯片、PDF 等“可重复办公流程”的组织方式。</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge mint" style="margin-bottom: 0.75rem;">开发流程</span>
+              <h3><a class="skill-link" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">obra/superpowers</a></h3>
+              <p>一组偏工程实践的技能库，适合学习 TDD、调试、协作和复杂任务拆解。可以把其中流程改造成自己的项目规范。</p>
             </div>
           </div>
-          <div class="content-card reveal" style="max-width: 750px; margin-top: 1.5rem; border-left: 4px solid var(--badge-yellow);">
-            <h3>💡 MCP 能做什么？</h3>
-            <p style="font-size: var(--body-size); color: var(--text-secondary); line-height: 1.6;">
-              通过 MCP，Claude Code 可以连接数据库、文件系统、API 等外部资源。例如：连接 Linear 查看 issue、连接 GitHub 管理仓库、连接浏览器控制网页
+          <div class="content-card reveal" style="max-width: 860px; margin-top: 1rem; border-left: 4px solid var(--badge-yellow);">
+            <p style="font-size: var(--body-size); color: var(--text-secondary);">
+              更多合集：<a class="skill-link" href="https://github.com/GetBindu/awesome-claude-code-and-skills" target="_blank" rel="noopener">GetBindu/awesome-claude-code-and-skills</a>、<a class="skill-link" href="https://github.com/VoltAgent/awesome-claude-skills" target="_blank" rel="noopener">VoltAgent/awesome-claude-skills</a>。先读 README 和 allowed-tools，再决定是否安装。
             </p>
           </div>
         </div>
