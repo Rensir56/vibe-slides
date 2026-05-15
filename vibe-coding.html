@@ -1116,26 +1116,29 @@ allowed-tools: Bash(git status *) Bash(git diff *) Bash(git add *) Bash(git comm
       </section>
 
       <!-- ===========================================
-           SLIDE 16: 实战案例 1
+           SLIDE 16: 实战 1 - 让 Agent 自行安装 Skill
            =========================================== -->
       <section class="slide" id="slide-15">
         <div class="slide-content">
           <span class="badge pink reveal">🧩 练习 1</span>
-          <h2 class="reveal">案例：做一个计数器</h2>
+          <h2 class="reveal">让 Agent 自行安装一个 Skill</h2>
           <div class="content-card reveal" style="max-width: 750px; margin-bottom: 1rem;">
             <h3 style="margin-bottom: 0.75rem;">需求描述：</h3>
             <div class="code-block">
 <span class="comment">/* 输入： */</span>
-<span class="string">"创建一个页面，中间显示数字 0，底部有 '+' 和 '-' 两个按钮，
-点击 '+' 数字加 1，点击 '-' 数字减 1"</span>
+<span class="string">"帮我安装这个 skill：
+https://github.com/titanwings/colleague-skill
+
+请先阅读仓库说明，确认应该安装到哪里；
+安装完成后，告诉我如何触发它，并做一次最小验证。"</span>
             </div>
           </div>
           <div class="content-card reveal" style="max-width: 750px;">
             <h3 style="margin-bottom: 0.75rem;">你会学到的：</h3>
             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-              <span class="badge mint">HTML 结构</span>
-              <span class="badge pink">CSS 布局</span>
-              <span class="badge yellow">JavaScript 事件</span>
+              <span class="badge mint">让 Agent 读 README</span>
+              <span class="badge pink">让 Agent 安装文件</span>
+              <span class="badge yellow">让 Agent 验证结果</span>
             </div>
           </div>
         </div>
