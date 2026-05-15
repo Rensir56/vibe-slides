@@ -382,6 +382,7 @@
       .skill-builder .content-grid,
       .skill-recs .content-grid,
       .skill-parts { grid-template-columns: 1fr !important; }
+      #slide-6 .content-grid { grid-template-columns: repeat(2, 1fr) !important; }
     }
 
     @media (max-height: 600px) {
@@ -549,83 +550,124 @@
       </section>
 
       <!-- ===========================================
-           SLIDE 6: Cursor 介绍
+           SLIDE 6: Cursor 四大模式概览
            =========================================== -->
       <section class="slide" id="slide-6">
         <div class="slide-content">
-          <span class="badge mint reveal">🔧 工具介绍</span>
-          <h2 class="reveal">Cursor - 智能代码编辑器</h2>
-          <div class="content-grid">
+          <span class="badge mint reveal">🔧 Cursor 四大模式</span>
+          <h2 class="reveal">Agent · Plan · Debug · Ask</h2>
+          <div class="content-card reveal" style="max-width: 780px; margin-bottom: 1.5rem; border-left: 4px solid #c8f0d8;">
+            <p style="font-size: clamp(0.95rem, 1.5vw, 1.15rem); color: var(--text-dark); line-height: 1.6;">
+              Cursor 不是"一个 AI 助手"，而是<strong style="color: #7a3a5a;">四个不同角色</strong>的组合——用对模式，效率翻倍。
+            </p>
+          </div>
+          <div class="content-grid" style="grid-template-columns: repeat(4, 1fr);">
             <div class="content-card reveal">
-              <div class="icon">🎯</div>
-              <h3>AI 原生 IDE</h3>
-              <p>专为 AI 协作设计的代码编辑器，基于 VS Code</p>
+              <span class="badge pink" style="margin-bottom: 0.75rem;">💬 Ask</span>
+              <h3>问问题</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">查语法、问概念、快速答疑，不碰代码</p>
             </div>
             <div class="content-card reveal">
-              <div class="icon">💬</div>
-              <h3>对话式编程</h3>
-              <p>侧边栏对话，直接描述需求，AI 帮你写代码</p>
+              <span class="badge mint" style="margin-bottom: 0.75rem;">📐 Plan</span>
+              <h3>聊方案</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">重构方案、功能设计、迁移规划，不写实现</p>
             </div>
             <div class="content-card reveal">
-              <div class="icon">⚡</div>
-              <h3>实时补全</h3>
-              <p>输入时 AI 自动预测下一行代码</p>
+              <span class="badge yellow" style="margin-bottom: 0.75rem;">🔍 Debug</span>
+              <h3>查错误</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">定位 bug、分析报错、性能优化</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge pink" style="margin-bottom: 0.75rem;">🤖 Agent</span>
+              <h3>全权代理</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary);">从分析到执行，写代码、改文件、建脚手架</p>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ===========================================
-           SLIDE 7: Cursor 功能详情
+           SLIDE 7: Cursor 四大模式详细对比
            =========================================== -->
       <section class="slide" id="slide-7">
         <div class="slide-content">
-          <span class="badge yellow reveal">🔍 核心功能</span>
-          <h2 class="reveal">Cursor 的三大核心功能</h2>
-          <div class="content-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <span class="badge yellow reveal">🔍 详细对比</span>
+          <h2 class="reveal">每个模式对应什么角色？</h2>
+          <div class="content-grid" style="grid-template-columns: repeat(2, 1fr);">
             <div class="content-card reveal">
-              <span class="badge pink" style="margin-bottom: 0.75rem;">1</span>
-              <h3>Ctrl+L 对话</h3>
-              <p>打开 AI 对话窗口，输入自然语言描述需求，AI 直接在代码中修改</p>
+              <span class="badge pink" style="margin-bottom: 0.75rem;">💬 Ask 模式</span>
+              <h3>技术顾问</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>用途：</strong>查语法、问概念、快速答疑</p>
+              <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>特点：</strong>只回答问题，不动代码</p>
+              <p style="font-size: var(--body-size); color: var(--text-dark);"><strong>示例：</strong>"React 中 useMemo 和 useCallback 区别？"</p>
             </div>
             <div class="content-card reveal">
-              <span class="badge mint" style="margin-bottom: 0.75rem;">2</span>
-              <h3>Tab 自动补全</h3>
-              <p>AI 预测下一段代码，按 Tab 直接采纳，比 GitHub Copilot 更懂上下文</p>
+              <span class="badge mint" style="margin-bottom: 0.75rem;">📐 Plan 模式</span>
+              <h3>架构师</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>用途：</strong>重构方案、功能设计、迁移规划</p>
+              <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>特点：</strong>聊方案，不写实现</p>
+              <p style="font-size: var(--body-size); color: var(--text-dark);"><strong>示例：</strong>"将项目从 JS 迁移到 TS，步骤是什么？"</p>
             </div>
             <div class="content-card reveal">
-              <span class="badge yellow" style="margin-bottom: 0.75rem;">3</span>
-              <h3>Ctrl+K 代码生成</h3>
-              <p>选中代码块，告诉 AI 你想怎么改，比如"把这个函数改成异步"</p>
+              <span class="badge yellow" style="margin-bottom: 0.75rem;">🔍 Debug 模式</span>
+              <h3>排障专家</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>用途：</strong>定位 bug、分析报错、性能优化</p>
+              <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>特点：</strong>专注问题定位，不扩展功能</p>
+              <p style="font-size: var(--body-size); color: var(--text-dark);"><strong>示例：</strong>"页面加载慢，哪里是瓶颈？"</p>
+            </div>
+            <div class="content-card reveal">
+              <span class="badge pink" style="margin-bottom: 0.75rem;">🤖 Agent 模式</span>
+              <h3>自动化实习生</h3>
+              <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>用途：</strong>实现完整功能、批量重构、脚手架搭建</p>
+              <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>⚠️ 风险：</strong>可能改多文件、引入依赖，<strong>务必先提交代码或新建分支</strong></p>
+              <p style="font-size: var(--body-size); color: var(--text-dark);"><strong>示例：</strong>"实现用户登录功能（含前后端）"</p>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ===========================================
-           SLIDE 8: Cursor 实战演示
+           SLIDE 8: Cursor 最佳工作流
            =========================================== -->
       <section class="slide" id="slide-8">
         <div class="slide-content">
-          <span class="badge pink reveal">🧪 实操演示</span>
-          <h2 class="reveal">用 Cursor 做一个按钮</h2>
-          <div class="content-card reveal" style="max-width: 800px; margin-bottom: 1rem;">
-            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-bottom: 1rem;">在 Cursor 中打开一个 HTML 文件，然后输入：</p>
-            <div class="code-block">
-<span class="comment">/* 在 Ctrl+L 对话框中输入： */</span>
-<span class="string">"给我写一个蓝色按钮，点击弹出 'Hello World'"</span>
+          <span class="badge pink reveal">⚡ 高效工作流</span>
+          <h2 class="reveal">模式切换让效率翻倍</h2>
+          <div class="content-card reveal" style="max-width: 800px; margin-bottom: 1.5rem;">
+            <p style="font-size: clamp(0.95rem, 1.5vw, 1.15rem); color: var(--text-dark); margin-bottom: 1rem;">
+              <strong style="color: #7a3a5a;">接到需求的标准流程：</strong>
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge mint" style="flex-shrink: 0;">① Plan</span>
+                <span>和 AI 聊 20 分钟，把方案敲定</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge pink" style="flex-shrink: 0;">② Ask</span>
+                <span>切 Ask 问清楚某个实现细节怎么落地</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge yellow" style="flex-shrink: 0;">③ Agent</span>
+                <span>方案清晰后，开 Agent 让它实现</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge pink" style="flex-shrink: 0;">④ Debug</span>
+                <span>跑出 bug，切 Debug 定位问题、修复</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge mint" style="flex-shrink: 0;">⑤ 回 Plan</span>
+                <span>卡住了？重新评估方案合理性</span>
+              </div>
             </div>
           </div>
           <div class="content-card reveal" style="max-width: 800px;">
-            <p style="font-size: var(--body-size); color: var(--text-dark);">
-              <strong>✨ AI 会自动生成：</strong>
+            <h3 style="margin-bottom: 0.5rem;">💡 核心心法</h3>
+            <p style="font-size: clamp(0.9rem, 1.5vw, 1.1rem); color: var(--text-dark); line-height: 1.6;">
+              "<strong style="color: #7a3a5a;">Agent 不是起点，是终点。</strong>方案越清晰，Agent 犯错越少。"
             </p>
-            <div class="code-block">
-<span class="keyword">&lt;button</span> <span class="string">style</span>="background: blue; color: white; padding: 10px 20px;"
-  <span class="keyword">onclick</span>="alert('Hello World')"&gt;
-  点击我
-<span class="keyword">&lt;/button&gt;</span>
-            </div>
+            <p style="font-size: var(--body-size); color: var(--text-secondary); margin-top: 0.5rem;">
+              Cursor 是你的顾问（Ask）、架构师（Plan）、排障专家（Debug），还是一个能干活的实习生（Agent）
+            </p>
           </div>
         </div>
       </section>
@@ -1195,23 +1237,23 @@ allowed-tools: Bash(git status *) Bash(git diff *) Bash(git add *) Bash(git comm
           <div class="content-card reveal" style="max-width: 750px; margin-bottom: 1.5rem;">
             <div style="display: flex; flex-direction: column; gap: 1rem;">
               <div style="display: flex; align-items: center; gap: 1rem;">
-                <span class="badge pink">1</span>
-                <span>Vibe Coding 是用自然语言与 AI 协作编程的方式</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 1rem;">
                 <span class="badge mint">2</span>
-                <span>Cursor 适合 IDE 场景，Claude Code 适合命令行场景</span>
+                <span>Cursor 有四大模式：Ask 问概念、Plan 聊方案、Debug 查错误、Agent 写代码</span>
               </div>
               <div style="display: flex; align-items: center; gap: 1rem;">
                 <span class="badge yellow">3</span>
-                <span>关键技巧：描述具体、分步骤、保持审核</span>
+                <span>高效工作流：先 Plan → Ask → Agent → Debug → 必要时回 Plan</span>
               </div>
               <div style="display: flex; align-items: center; gap: 1rem;">
                 <span class="badge pink">4</span>
-                <span>Skill 可以把重复流程沉淀成 /skill-name，一次写好，多次复用</span>
+                <span>关键技巧：描述具体、分步骤、保持审核</span>
               </div>
               <div style="display: flex; align-items: center; gap: 1rem;">
                 <span class="badge mint">5</span>
+                <span>Skill 可以把重复流程沉淀成 /skill-name，一次写好，多次复用</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span class="badge pink">6</span>
                 <span>AI 是助手，你才是主厨，要保持对代码的理解和掌控</span>
               </div>
             </div>
@@ -1232,7 +1274,7 @@ allowed-tools: Bash(git status *) Bash(git diff *) Bash(git add *) Bash(git comm
               <p style="font-size: var(--body-size); color: var(--text-secondary);">也可以课后实践：</p>
               <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem;">
                 <span class="badge mint">下载 Cursor</span>
-                <span class="badge pink">尝试 Claude Code</span>
+                <span class="badge pink">试试四大模式切换</span>
                 <span class="badge yellow">写一个 commit skill</span>
               </div>
             </div>
