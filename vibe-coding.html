@@ -1145,35 +1145,74 @@ https://github.com/titanwings/colleague-skill
       </section>
 
       <!-- ===========================================
-           SLIDE 17: 实战案例 2
+           SLIDE 17: 实战练习 2 - Parquet 数据集摘要 Skill
            =========================================== -->
       <section class="slide" id="slide-16">
         <div class="slide-content">
           <span class="badge pink reveal">🧩 练习 2</span>
-          <h2 class="reveal">案例：做一个待办清单</h2>
+          <h2 class="reveal">为 Parquet 数据集做查看 Skill</h2>
           <div class="content-card reveal" style="max-width: 750px; margin-bottom: 1rem;">
-            <h3 style="margin-bottom: 0.75rem;">需求描述：</h3>
+            <h3 style="margin-bottom: 0.75rem;">场景描述：</h3>
             <div class="code-block">
 <span class="comment">/* 输入： */</span>
-<span class="string">"创建一个待办事项页面，上面是一个输入框和一个添加按钮，
-下面是一列表格，每行显示待办事项，最右边有删除按钮"</span>
+<span class="string">"我下载了很多 parquet 格式的数据集，不方便直接查看。
+请帮我做一个 skill：给定 parquet 文件或目录时，
+自动生成若干 example rows，同时输出该数据集的摘要内容。"</span>
             </div>
           </div>
           <div class="content-card reveal" style="max-width: 750px;">
-            <h3 style="margin-bottom: 0.75rem;">你会学到的：</h3>
+            <h3 style="margin-bottom: 0.75rem;">Skill 应该做什么：</h3>
             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-              <span class="badge mint">数组操作</span>
-              <span class="badge pink">DOM 操作</span>
-              <span class="badge yellow">数据持久化</span>
+              <span class="badge mint">读取 schema / 行数 / 列类型</span>
+              <span class="badge pink">抽样生成 example</span>
+              <span class="badge yellow">总结字段含义和数据分布</span>
+              <span class="badge mint">输出 Markdown 报告</span>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ===========================================
-           SLIDE 18: 常见错误
+           SLIDE 18: 实战练习 2 - 交付后自动提交
            =========================================== -->
       <section class="slide" id="slide-17">
+        <div class="slide-content">
+          <span class="badge yellow reveal">🚀 进阶需求</span>
+          <h2 class="reveal">生成报告后，直接进入提交流程</h2>
+          <div class="content-card reveal" style="max-width: 820px; margin-bottom: 1rem;">
+            <h3 style="margin-bottom: 0.75rem;">把交付动作也交给 Skill：</h3>
+            <div class="code-block">
+<span class="comment">/* 追加需求： */</span>
+<span class="string">"当 parquet-summary skill 生成 example 和数据集摘要后，
+请继续调用 commit 相关 skill：
+
+1. 检查 git status 和 git diff
+2. 只提交本次生成或修改的文件
+3. 生成清晰的 commit message
+4. 在我确认后执行 git commit，并继续 git push"</span>
+            </div>
+          </div>
+          <div class="content-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+            <div class="content-card reveal">
+              <h3>先检查</h3>
+              <p>提交前必须展示变更范围，避免把无关文件、临时数据或敏感内容一起带上。</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>再确认</h3>
+              <p>commit 和 push 都是有副作用的操作，适合让 Agent 准备，但由人来确认执行。</p>
+            </div>
+            <div class="content-card reveal">
+              <h3>可复用</h3>
+              <p>数据分析、报告生成、文档更新完成后，都可以复用同一套提交发布流程。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===========================================
+           SLIDE 19: 常见错误
+           =========================================== -->
+      <section class="slide" id="slide-18">
         <div class="slide-content">
           <span class="badge yellow reveal">⚠️ 注意事项</span>
           <h2 class="reveal">新手常见的错误</h2>
@@ -1199,9 +1238,9 @@ https://github.com/titanwings/colleague-skill
       </section>
 
       <!-- ===========================================
-           SLIDE 19: 学习资源
+           SLIDE 20: 学习资源
            =========================================== -->
-      <section class="slide" id="slide-18">
+      <section class="slide" id="slide-19">
         <div class="slide-content">
           <span class="badge mint reveal">📚 学习资源</span>
           <h2 class="reveal">继续深入学习</h2>
@@ -1231,9 +1270,9 @@ https://github.com/titanwings/colleague-skill
       </section>
 
       <!-- ===========================================
-           SLIDE 20: 总结
+           SLIDE 21: 总结
            =========================================== -->
-      <section class="slide" id="slide-19">
+      <section class="slide" id="slide-20">
         <div class="slide-content">
           <span class="badge mint reveal">✨ 总结</span>
           <h2 class="reveal">今天学到的重要内容</h2>
@@ -1265,9 +1304,9 @@ https://github.com/titanwings/colleague-skill
       </section>
 
       <!-- ===========================================
-           SLIDE 21: Q&A
+           SLIDE 22: Q&A
            =========================================== -->
-      <section class="slide" id="slide-20">
+      <section class="slide" id="slide-21">
         <div class="slide-title">
           <div class="panel-peach">
             <span class="badge pink reveal">🙋 Q&A</span>
